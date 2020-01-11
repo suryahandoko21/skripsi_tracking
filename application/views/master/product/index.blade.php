@@ -55,10 +55,12 @@
 				<table id="data-table-combine" class="table table-striped table-bordered">
 					<thead>
 					  <tr>
-						@foreach ($th as $i)
-							  <th scope="col">{{str_replace('_',' ',strtoupper($i))}}</th>
-						@endforeach
 							<th scope="col">#</th>
+							<th scope="col">Name</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Price</th>
+							<th scope="col">SKU</th>
+							<th scope="col">Model</th>
 							<th scope="col">#</th>
 					  </tr>
 					</thead>

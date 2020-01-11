@@ -13,29 +13,17 @@
 	<!-- begin breadcrumb -->
 	<ol class="breadcrumb pull-right">
 		<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-		<li class="breadcrumb-item"><a href="javascript:;">Page Options</a></li>
-		<li class="breadcrumb-item active">Blank Page</li>
+		<li class="breadcrumb-item"><a href="javascript:;">shops</a></li>
+		<li class="breadcrumb-item active">Order</li>
 	</ol>
 	<!-- end breadcrumb -->
+	
 	<!-- begin page-header -->
-	<h1 class="page-header">Blank Page <small>header small text goes here...</small></h1>
+	<h1 class="page-header">Order <small>header small text goes here...</small></h1>
 	<!-- end page-header -->
-	@if ($alert)
-        <div class="note note-warning note-with-right-icon m-b-15" id="alert-update">
-            <div class="note-icon"><i class="fa fa-lightbulb"></i></div>
-            <div class="note-content text-right">
-                <h4>
-                    <b>{{$alert}}</b>
-                </h4>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Maecenas id gravida libero. Etiam semper id sem a ultricies.
-                </p>
-            </div>
-        </div>
-    @endif
+	
 	<!-- begin panel -->
-	<div class="panel panel-inverse">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<div class="panel-heading-btn">
 				<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
@@ -43,33 +31,26 @@
 				<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
 				<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
 			</div>
-		<a class="btn btn-xs btn-success col-1" href="{{route('master.courier.create')}}">
-					<span class="fa-stack">
-						<i class="fa fa-terminal"></i>
-					</span>
-				ADD
-			</a>
+			<h4 class="panel-title">List of Order</h4>
 		</div>
 		<div class="panel-body">
-			{{-- @dump($customer) --}}
-                <table id="data-table-combine" class="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-							<th scope="col">#</th>
-							<th scope="col">Nama</th>
-							<th scope="col">Email</th>
-							<th scope="col">Phone</th>
-							<th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-			</table>
-			
+			<table id="data-table-combine" class="table table-striped table-bordered">
+				<thead>
+				  <tr>
+					@foreach ($kolom as $i)
+						<th scope="col">{{str_replace('_',' ',strtoupper($i))}}</th>
+					@endforeach
+					<th scope="col">Action</th>
+				  </tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+		</table>
 		</div>
 	</div>
 	<!-- end panel -->
+
 @endsection
 
 @push('css')
@@ -93,7 +74,7 @@
 	<script src="{{base_url('/assets/plugins/datatables/js/responsive/dataTables.responsive.js')}}"></script>
 	<script src="{{base_url('/assets/plugins/datatables/js/responsive/responsive.bootstrap4.js')}}"></script>
 	<script>
-		const g = "{{route('courier.grid')}}"
+		const g = "{{route('order.grid')}}"
 		$(document).ready(function() {
 			$('#data-table-combine').DataTable({
 				processing: true,

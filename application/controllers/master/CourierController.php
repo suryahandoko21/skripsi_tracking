@@ -1,6 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Ozdemir\Datatables\Datatables;
+use Ozdemir\Datatables\DB\MySQL;
 class CourierController extends CI_Controller {
 
     public function __construct()
@@ -58,15 +59,15 @@ class CourierController extends CI_Controller {
 	
 	public function grid()
     {
-        $j = $this->griddata
-                ->field($this->Couriers->kolom)
-				->table('couriers')
-                ->add('edit',function($data){
-                    return '<a href="'. route('master.courier.edit',$data['id']).'" class="btn btn-sm btn-warning m-b-2">Edit</a>';
+		$grid = new Datatables(new MySQL($this->config->item('datatables')));
+        $j = $grid->query('select id,name,email,phone from couriers')
+                ->add('action',function($data){
+					$action = '<div class="btn-group btn-group-sm">';
+					$action .= '<a href="'. route('master.courier.edit',$data['id']).'" class="btn btn-sm btn-warning m-b-2">Edit</a>';
+                	$action .= '<a href="'.route('master.courier.delete',$data['id']).'" class="btn btn-sm btn-danger m-b-2">Delete</a>';
+					$action .= '</div>';
+					return $action;
                 })
-                ->add('delete',function($data){
-                    return '<a href="'.route('master.courier.delete',$data['id']).'" class="btn btn-sm btn-danger m-b-2">Delete</a>';
-				})
                 ->generate();
         $this->output
                 ->set_content_type('application/json')

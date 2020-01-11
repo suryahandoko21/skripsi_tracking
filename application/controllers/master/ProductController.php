@@ -1,6 +1,8 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Ozdemir\Datatables\Datatables;
+use Ozdemir\Datatables\DB\MySQL;
+use Illuminate\Database\Capsule\Manager as DB;
 class ProductController extends CI_Controller {
 	protected $fields;
     public function __construct()
@@ -59,15 +61,20 @@ class ProductController extends CI_Controller {
 	
 	public function grid()
     {
-        $j = $this->griddata
-                ->field($this->fields)
-				->table('products')
-                ->add('edit',function($data){
-                    return '<a href="'. route('product.edit',$data['id']).'" class="btn btn-sm btn-warning m-b-2">Edit</a>';
+		DB::enableQueryLog(); // Enable query log
+		$q = new Products;
+		$q::select(['id','products_name','products_quantity','products_price','products_sku','products_model'])->get();
+		$query = DB::getQueryLog()[0]['query']; // Show results of log
+		
+		$grid = new Datatables(new MySQL($this->config->item('datatables')));
+        $j = $grid->query($query)
+                ->add('action',function($data){
+					$action = '<div class="btn-group btn-group-sm">';
+					$action .= '<a href="'. route('product.edit',$data['id']).'" class="btn btn-sm btn-warning m-b-2">Edit</a>';
+                	$action .= '<a href="'.route('product.delete',$data['id']).'" class="btn btn-sm btn-danger m-b-2">Delete</a>';
+					$action .= '</div>';
+					return $action;
                 })
-                ->add('delete',function($data){
-                    return '<a href="'.route('product.delete',$data['id']).'" class="btn btn-sm btn-danger m-b-2">Delete</a>';
-				})
 				// ->hide('lastname')
 				->generate();
         $this->output

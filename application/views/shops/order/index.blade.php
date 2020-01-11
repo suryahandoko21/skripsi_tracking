@@ -24,22 +24,26 @@
 	
 	<!-- begin panel -->
 	<div class="panel panel-primary">
-		<div class="panel-heading">
-			<div class="panel-heading-btn">
-				<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-				<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
-				<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-				<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
-			</div>
-			<h4 class="panel-title">List of Order</h4>
-		</div>
+
 		<div class="panel-body">
 			<table id="data-table-combine" class="table table-striped table-bordered">
 				<thead>
 				  <tr>
-					@foreach ($kolom as $i)
-						<th scope="col">{{str_replace('_',' ',strtoupper($i))}}</th>
-					@endforeach
+					<th scope="col">#</th>
+					<th scope="col">Invoice Number</th>
+					<th scope="col">Delivery Name</th>
+					<th scope="col">Delivery Company</th>
+					<th scope="col">Delivery Address</th>
+					<th scope="col">Delivery City</th>
+					<th scope="col">Delivery Post Code</th>
+					<th scope="col">Delivery State</th>
+					<th scope="col">Delivery Phone</th>
+					<th scope="col">Billing Name</th>
+					<th scope="col">Billing Company</th>
+					<th scope="col">Billing Adress</th>
+					<th scope="col">Payment Method</th>
+					<th scope="col">Latitude</th>
+					<th scope="col">Longtidue</th>
 					<th scope="col">Action</th>
 				  </tr>
 				</thead>

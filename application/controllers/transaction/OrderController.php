@@ -1,6 +1,8 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Ozdemir\Datatables\Datatables;
+use Ozdemir\Datatables\DB\MySQL;
+use Illuminate\Database\Capsule\Manager as DB;
 class OrderController extends CI_Controller {
 
     protected $fields;
@@ -61,18 +63,33 @@ class OrderController extends CI_Controller {
     
     public function grid()
       {
-          $j = $this->griddata
-                  ->field($this->Orders->kolom)
-                  ->table('orders')
-                  ->where('status','=',null)
-                  ->add('edit',function($data){
-                      $action = '<div class="btn-group-xs">';
-                      $action += '<a href="'. route('order.take',$data['id']).'" class="btn btn-sm btn-warning m-b-2">Takes Order</a>';
-                      $action += '<a href="'. route('order.take',$data['id']).'" class="btn btn-sm btn-warning m-b-2">Takes Order</a>';                      $action += '</div>';
-                      return $action;
-                  })
-          // ->hide('billing_name', 'billing_company', 'billing_street_address', 'payment_method')
-          ->generate();
+        DB::enableQueryLog(); // Enable query log
+        $q = new Orders;
+        $q::select(
+          [
+            'id',
+            'invoice_number',
+            'delivery_name',
+            'delivery_company',
+            'delivery_street_address',
+            'delivery_city',
+            'delivery_postcode',
+            'delivery_state',
+            'delivery_phone',
+            'billing_name',
+            'billing_company',
+            'billing_street_address',
+            'payment_method',
+            'latitude',
+            'longitude',
+            'status'
+          ])->get();
+        $query = DB::getQueryLog()[0]['query']; // Show results of log
+
+        $grid = new Datatables(new MySQL($this->config->item('datatables')));
+          $j = $grid->query($query)
+                  // ->hide('latitude', 'longitude')
+                  ->generate();
           $this->output
                   ->set_content_type('application/json')
                   ->set_output($j);

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use Illuminate\Database\Capsule\Manager as Capsule;
-
+// use Illuminate\Database\Capsule\Manager as DB;
 $active_group = env('DB_GROUP');
 $query_builder = TRUE;
 $db['default'] = array(

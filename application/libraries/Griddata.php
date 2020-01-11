@@ -9,7 +9,9 @@ class Griddata
     protected $ci;
     protected $config;
     protected $field = false;
-    // protected $table = false;
+    protected $kolom;
+    protected $where = [];
+    protected $qq = false;
     protected $dt;
     public function __construct()
     {
@@ -22,32 +24,48 @@ class Griddata
                 'database' => env('DB_DATABASE') ];
         $this->dt = new Datatables( new MySQL($config) );
     }
-    public function field(array $field = [])
-    {
-            $this->field = implode(",",$field);
-            return $this;
-    }
+
     public function table(string $table)
     {
-        // if(!$this->table)
-        // {
-        //     $this->error('Datatables mana tablenya gan...???','Table harus di set');
-        // }
-        // if(!$this->field)
-        // {
-        //     $this->error('Datatables field harus array gan...???','Field harus di declare');
-        // }
+        $this->qq = 'Select '.$this->field.' from '.$table;
         try {
-            $this->dt->query('Select '.$this->field.' from '.$table);
-            return $this->dt;
-
+            return $this->qq;
         } catch (\Exception $th) {
             return show_error($th->getMessage().'<br>'.
             $th->getFile().'<br> <strong>Ada di Baris: '.$th->getLine().'</strong>'
             , 500, 'Error query datatable');
         }
     }
+
+    public function field(array $field = []) // implode array
+    {
+            $this->field = implode(",",$field);
+            $this->kolom = $field;
+            return $this;
+    }
+    public function where(array $where = [])
+    {
+        dd($this->qq);
+        
+    //     if(count($where) !== 3)
+    //     {
+    //         throw new Exception("Array harus statis parameter, operan, value ngga boleh nambah", 500);
+    //     }
+    //     $this->where .= $where[0].' '.$where[1].' "'.$where[2].'"';;
+    //    return $this;
+    }
     
+    // public function run()
+    // {
+        // if (isset($this->where)) {
+        //     dd($this->where);
+
+        //     $q = $this->qq.' where '.$this->where;
+        //     $this->dt->query($q);
+        //     return $this->dt;
+        // }
+        // return $this->dt;
+    // }
     protected function error($message,$head = 'Error')
     {
         return show_error($message, 500, $head);
